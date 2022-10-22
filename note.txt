@@ -1,0 +1,5 @@
+package.json script for Windows
+
+To set the NODE_ENV variable
+NODE_ENV=development nodemon server.js (Runs on IOS)
+set NODE_ENV=developemt&&nodemon server.js (Runs on windows)

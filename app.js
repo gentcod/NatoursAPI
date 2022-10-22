@@ -1,5 +1,6 @@
 const express = require('express');
 const morgan = require('morgan');
+// const {checkBody} = require('./controllers/toursControllers');
 
 //Initalize ExpressJS
 const app = express();
@@ -9,19 +10,22 @@ const tourRouter = require('./routes/tourRoutes');
 const userRouter = require('./routes/userRoutes');
 
 //Middleware: they are run for every HTTP request, the order of application is important
-app.use(morgan('dev'));
+if(process.env.NODE_ENV === 'development') {
+   app.use(morgan('dev'));
+}
 app.use(express.json()); //Gives aceess to the params object from the request, Parse data from body
+app.use(express.static(`${__dirname}/public`)); //To show static html pages
 
 //Dev created middlewares
-app.use((req, res, next) => {
-   console.log('Hello from the middleware 😎');
-   next();
-})
+// app.use((req, res, next) => {
+//    console.log('Hello from the middleware 😎');
+//    next();
+// })
 
-app.use((req, res, next) => {
-   req.requestTime = new Date().toISOString();
-   next();
-})
+// app.use((req, res, next) => {
+//    req.requestTime = new Date().toISOString();
+//    next();
+// })
 
 //Mounting Routes
 app.use('/api/v1/tours', tourRouter);
