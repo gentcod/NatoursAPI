@@ -10,8 +10,8 @@ const tourRouter = require('./routes/tourRoutes');
 const userRouter = require('./routes/userRoutes');
 
 //Middleware: they are run for every HTTP request, the order of application is important
-if(process.env.NODE_ENV === 'development') {
-   app.use(morgan('dev'));
+if (process.env.NODE_ENV === 'development') {
+  app.use(morgan('dev'));
 }
 app.use(express.json()); //Gives aceess to the params object from the request, Parse data from body
 app.use(express.static(`${__dirname}/public`)); //To show static html pages
@@ -31,8 +31,7 @@ app.use(express.static(`${__dirname}/public`)); //To show static html pages
 app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);
 
-module.exports = app
-
+module.exports = app;
 
 /////////////////////////////////////
 //Reference

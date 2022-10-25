@@ -17,6 +17,7 @@ exports.getAllUsers = (req, res) => {
 
 exports.createUser = (req, res) => {
   const newId = 1;
+  // eslint-disable-next-line prefer-object-spread
   const newUser = Object.assign({ id: newId }, req.body);
 
   users.push(newUser);
@@ -28,6 +29,7 @@ exports.createUser = (req, res) => {
         status: 'success',
         data: {
           users: newUser,
+          errorCode: err,
         },
       });
     }
