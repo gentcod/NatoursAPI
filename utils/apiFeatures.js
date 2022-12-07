@@ -5,14 +5,10 @@ class APIFeatures {
   }
 
   filter() {
-    //Create shallow copy of query object
     const queryObj = { ...this.queryString };
-    //Query fields to be excluded
     const excludedFields = ['page', 'sort', 'limit', 'fields'];
-    //Filter Query: Iterate through the array and delete item in array from the query object
     excludedFields.forEach((el) => delete queryObj[el]);
 
-    //1. ADVANCED FILTERING
     let queryStr = JSON.stringify(queryObj);
     queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
 
@@ -44,7 +40,6 @@ class APIFeatures {
   }
 
   paginate() {
-    //4. PAGINATION
     const page = this.queryString.page * 1 || 1;
     const limit = this.queryString.limit * 1 || 1;
     const skip = (page - 1) * limit;

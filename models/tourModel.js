@@ -5,7 +5,7 @@ const toursShema = new mongoose.Schema({
   name: {
     type: String,
     required: [true, 'A tour must have a name'],
-    unique: true, //Ensure value input is unique and cannot be recreated.
+    unique: true,
     trim: true,
   },
   duration: {
@@ -22,7 +22,7 @@ const toursShema = new mongoose.Schema({
   },
   ratingsAverage: {
     type: Number,
-    default: 4.5, //Set default value
+    default: 4.5,
   },
   ratingQuantity: {
     type: Number,
@@ -37,7 +37,7 @@ const toursShema = new mongoose.Schema({
   },
   summary: {
     type: String,
-    trim: true, //Removes white spaces at the beginning and end of a string text
+    trim: true,
     required: [true, 'A tour must have a summary'],
   },
   description: {
@@ -48,11 +48,11 @@ const toursShema = new mongoose.Schema({
     type: String,
     required: [true, 'A tour have a cover image'],
   },
-  images: [String], //To have an array of strings
+  images: [String],
   createdAt: {
     type: Date,
     default: Date.now(),
-    select: false, //To exclude from request response
+    select: false,
   },
   startDates: [Date],
 });
@@ -61,23 +61,3 @@ const toursShema = new mongoose.Schema({
 const Tour = mongoose.model('Tour', toursShema);
 
 module.exports = Tour;
-
-/**
- * //Document instance created from Schema model
-const testTour = new Tour({
-  name: 'The Forest Hiker',
-  rating: 4.7,
-  price: 497,
-});
-
-//Save document to database
-testTour
-  .save()
-  .then((doc) => {
-    console.log(doc);
-  })
-  .catch((err) => {
-    console.error('Error 🧨:', err);
-  });
-
- */

@@ -11,7 +11,6 @@ const DB = process.env.DATABASE.replace(
 );
 
 mongoose
-  // .connect(process.env.DATABASE_LOCAL, { //Local database
   .connect(DB, {
     useNewUrlParser: true,
     useCreateIndex: true,
@@ -22,6 +21,7 @@ mongoose
 
 const port = process.env.PORT;
 // eslint-disable-next-line spaced-comment
+
 //Initialize server
 app.listen(port, () => {
   console.log(`App running on port ${port}...`);
