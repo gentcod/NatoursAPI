@@ -6,9 +6,13 @@ const {
   getAllTours,
   getTour,
   updateTour,
+  aliasTopTours,
 } = require('../controllers/toursControllers');
 
 const router = express.Router();
+
+//Aliasing
+router.route('/top-5-tours').get(aliasTopTours, getAllTours);
 
 //Param middleware: only runs for certain parameters
 // router.param('id', checkID);
