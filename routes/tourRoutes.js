@@ -8,6 +8,7 @@ const {
   updateTour,
   aliasTopTours,
   getToursStats,
+  getMonthlyPlan,
 } = require('../controllers/toursControllers');
 
 const router = express.Router();
@@ -17,6 +18,7 @@ router.route('/top-5-tours').get(aliasTopTours, getAllTours);
 
 //Aggregation
 router.route('/tours-stats').get(getToursStats);
+router.route('/monthly-plan/:year').get(getMonthlyPlan);
 
 //Queries
 router.route('/').get(getAllTours).post(createTour);
