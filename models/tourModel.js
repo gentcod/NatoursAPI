@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const slugify = require('slugify');
-// const validatorPac = require('validator');
 
 //Create database schema
 const toursShema = new mongoose.Schema(
@@ -12,7 +11,6 @@ const toursShema = new mongoose.Schema(
       trim: true,
       maxlength: [40, 'A tour name must have less or equal to 40 charcaters'],
       minlength: [10, 'A tour name must have at least 10 characters'],
-      // validate: [validatorPac.isAlpha, 'Tour name must only contain characters'] 
     },
     slug: String,
     duration: {
@@ -94,16 +92,6 @@ toursShema.pre('save', function (next) {
   this.slug = slugify(this.name, { lower: true });
   next();
 });
-
-// toursShema.pre('save', function(next) {
-//   console.log('Will save document...');
-//   next();
-// });
-
-// toursShema.post('save', function(doc, next) {
-//   console.log(doc);
-//   next();
-// });
 
 //QUERY MIDDLEWARE
 toursShema.pre(/^find/, function (next) {
