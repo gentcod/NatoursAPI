@@ -30,7 +30,7 @@ exports.getAllTours = async (req, res) => {
   } catch (err) {
     res.status(400).json({
       status: 'fail',
-      message: `Failed to fetch all tours: ${err}`,
+      message: err,
     });
   }
 };
@@ -68,7 +68,7 @@ exports.createTour = async (req, res) => {
   } catch (err) {
     res.status(400).json({
       status: 'fail',
-      message: 'Invalid data sent',
+      message: err,
     });
   }
 };
