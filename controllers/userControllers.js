@@ -1,11 +1,16 @@
 const fs = require('fs');
+const catchAsync = require('../utils/catchAsync');
+const AppError = require('../utils/appError');
+const User = require('../models/userModel');
 
 const users = JSON.parse(
   fs.readFileSync(`${__dirname}/../dev-data/data/users.json`)
 );
 const checkUser = (request) => users.find((el) => el._id === request.params.id);
 
-exports.getAllUsers = (req, res) => {
+exports.getAllUsers = catchAsync(async (req, res) => {
+  const users = await User.find();
+
   res.status(200).json({
     status: 'success',
     results: users.length,
@@ -13,11 +18,10 @@ exports.getAllUsers = (req, res) => {
       users,
     },
   });
-};
+});
 
-exports.createUser = (req, res) => {
+exports.createUser = catchAsync((req, res) => {
   const newId = 1;
-  // eslint-disable-next-line prefer-object-spread
   const newUser = Object.assign({ id: newId }, req.body);
 
   users.push(newUser);
@@ -34,18 +38,13 @@ exports.createUser = (req, res) => {
       });
     }
   );
-};
+});
 
-exports.getUser = (req, res) => {
-  const user = checkUser(req);
+exports.getUser = catchAsync(async (req, res) => {
+  const user = await User.findById(req.params.id)
 
-  if (!user) {
-    return res.status(404).json({
-      status: 'fail',
-      message: 'Invalid ID',
-    });
-  }
-
+  if (!user) return new AppError('Invalid ID', 404);
+  
   res.status(200).json({
     status: 'success',
     results: user.length,
@@ -53,34 +52,26 @@ exports.getUser = (req, res) => {
       user,
     },
   });
-};
+});
 
-exports.updateUser = (req, res) => {
+exports.updateUser = catchAsync(async (req, res) => {
   const user = checkUser(req);
 
-  if (!user) {
-    return res.status(404).json({
-      status: 'fail',
-      message: 'Invalid ID',
-    });
-  }
+  if (!user) return new AppError('Invalid ID', 404);
+
   res.status(200).json({
     status: 'success',
     tour: '<Updated tour>',
   });
-};
+});
 
-exports.deleteUser = (req, res) => {
+exports.deleteUser = catchAsync(async (req, res) => {
   const user = checkUser(req);
 
-  if (!user) {
-    return res.status(404).json({
-      status: 'fail',
-      message: 'Invalid ID',
-    });
-  }
+  if (!user) return new AppError('Invalid ID', 404);
+ 
   res.status(204).json({
     status: 'success',
     data: null,
   });
-};
+});
