@@ -4,7 +4,7 @@ const AppError = require('../utils/appError');
 const User = require('../models/userModel');
 
 const users = JSON.parse(
-  fs.readFileSync(`${__dirname}/../dev-data/data/users.json`)
+  fs.readFileSync(`${__dirname}/../dev-data/data/users.json`),
 );
 const checkUser = (request) => users.find((el) => el._id === request.params.id);
 
@@ -36,15 +36,33 @@ exports.createUser = catchAsync((req, res) => {
           errorCode: err,
         },
       });
-    }
+    },
   );
 });
 
+exports.deleteMe = catchAsync(async (req, res) => {
+  await User.findByIdAndUpdate(
+    req.user._id,
+    {
+      active: false,
+    },
+    {
+      new: true,
+      runValidators: true,
+    },
+  );
+
+  res.status(204).json({
+    status: 'success',
+    data: null
+  })
+});
+
 exports.getUser = catchAsync(async (req, res) => {
-  const user = await User.findById(req.params.id)
+  const user = await User.findById(req.params.id);
 
   if (!user) return new AppError('Invalid ID', 404);
-  
+
   res.status(200).json({
     status: 'success',
     results: user.length,
@@ -69,7 +87,7 @@ exports.deleteUser = catchAsync(async (req, res) => {
   const user = checkUser(req);
 
   if (!user) return new AppError('Invalid ID', 404);
- 
+
   res.status(204).json({
     status: 'success',
     data: null,

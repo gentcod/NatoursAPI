@@ -59,7 +59,7 @@ exports.createTour = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.updateTour = catchAsync(async (req, res) => {
+exports.updateTour = catchAsync(async (req, res, next) => {
   const { id } = req.params;
   const tour = await Tour.findByIdAndUpdate(id, req.body, {
     new: true,
@@ -78,9 +78,9 @@ exports.updateTour = catchAsync(async (req, res) => {
   });
 });
 
-exports.deleteTour = catchAsync(async (req, res) => {
+exports.deleteTour = catchAsync(async (req, res, next) => {
   const { id } = req.params;
-  const tour = await Tour.findOneAndDelete(id);
+  const tour = await Tour.findByIdAndDelete(id);
 
   if (!tour) {
     return next(new AppError('Tour does not exists', 404))
@@ -92,7 +92,7 @@ exports.deleteTour = catchAsync(async (req, res) => {
   });
 });
 
-exports.getToursStats = catchAsync(async (req, res) => {
+exports.getToursStats = catchAsync(async (req, res, next) => {
   const stats = await Tour.aggregate([
     {
       $match: { ratingsAverage: { $gte: 4.5 } },
