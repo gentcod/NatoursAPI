@@ -6,6 +6,12 @@ const AppError = require('../utils/appError');
 const tokenGenerator = require('../utils/tokenGenerator');
 const sendMail = require('../utils/mailer');
 
+const cookieOptions = {
+  expires: new Date(Date.now() + process.env.COOKIE_EXP * 60 * 60 * 60 * 1000),
+  httpOnly: true,
+  secure: process.env.NODE_ENV === 'production' ? true : undefined,
+}
+
 exports.signUp = catchAsync(async (req, res, next) => {
   const newUser = await User.create({
     name: req.body.name,
@@ -17,6 +23,8 @@ exports.signUp = catchAsync(async (req, res, next) => {
 
   //Payload, Secret and Options
   const token = tokenGenerator.signToken({ id: newUser._id });
+
+  res.cookie('token', token, cookieOptions)
 
   res.status(201).json({
     status: 'success',
@@ -45,6 +53,8 @@ exports.signIn = catchAsync(async (req, res, next) => {
     );
 
   const token = tokenGenerator.signToken({ id: user._id });
+
+  res.cookie('token', token, cookieOptions)
 
   res.status(200).json({
     status: 'success',
